@@ -1,0 +1,138 @@
+[
+{
+  "model": "catalog.category",
+  "pk": 1,
+  "fields": {
+    "name": "Автомобили",
+    "description": "Описание автомобилей"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 2,
+  "fields": {
+    "name": "Мебель",
+    "description": "Описание мебели"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 3,
+  "fields": {
+    "name": "Товары для дома",
+    "description": "Описание товаров для дома"
+  }
+},
+{
+  "model": "catalog.category",
+  "pk": 4,
+  "fields": {
+    "name": "Электротовары",
+    "description": "Описание электротоваров"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 1,
+  "fields": {
+    "name": "Ока",
+    "description": "Маленький, экономный автомобиль",
+    "image": "",
+    "category": 1,
+    "price": "600000.00",
+    "created_at": "2023-08-01T21:16:53.225Z",
+    "changed_at": "2023-08-01T21:47:09.455Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 2,
+  "fields": {
+    "name": "Нива",
+    "description": "Вездеход",
+    "image": "",
+    "category": 1,
+    "price": "900000.00",
+    "created_at": "2023-08-01T21:43:30.345Z",
+    "changed_at": "2023-08-01T21:43:30.345Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 3,
+  "fields": {
+    "name": "Стол",
+    "description": "Обеденный большой стол",
+    "image": "",
+    "category": 2,
+    "price": "29999.99",
+    "created_at": "2023-08-01T21:44:22.891Z",
+    "changed_at": "2023-08-01T21:44:22.891Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 4,
+  "fields": {
+    "name": "Кровать",
+    "description": "двуспальная",
+    "image": "",
+    "category": 2,
+    "price": "50000.00",
+    "created_at": "2023-08-01T21:49:02.214Z",
+    "changed_at": "2023-08-01T21:49:02.214Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 5,
+  "fields": {
+    "name": "Посуда",
+    "description": "Фарфоровая",
+    "image": "",
+    "category": 3,
+    "price": "3000.00",
+    "created_at": "2023-08-01T21:49:47Z",
+    "changed_at": "2023-08-01T21:49:47Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 6,
+  "fields": {
+    "name": "Кухонный комбайн",
+    "description": "Перемолет все",
+    "image": "",
+    "category": 3,
+    "price": "8990.00",
+    "created_at": "2023-08-01T21:50:27.005Z",
+    "changed_at": "2023-08-01T21:50:27.005Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 7,
+  "fields": {
+    "name": "Перфоратор",
+    "description": "С функцией реверса",
+    "image": "",
+    "category": 4,
+    "price": "7580.90",
+    "created_at": "2023-08-01T21:51:09.876Z",
+    "changed_at": "2023-08-01T21:51:09.876Z"
+  }
+},
+{
+  "model": "catalog.product",
+  "pk": 8,
+  "fields": {
+    "name": "Удлинитель",
+    "description": "С защитой от коротких замыканий",
+    "image": "",
+    "category": 4,
+    "price": "600.00",
+    "created_at": "2023-08-01T21:52:15.523Z",
+    "changed_at": "2023-08-01T21:52:15.523Z"
+  }
+}
+]
