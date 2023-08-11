@@ -1,2 +1,2 @@
 # internet_shop
-Tasks on module 19
+Tasks on module 6
