@@ -26,7 +26,7 @@ class Product(models.Model):
     changed_at = models.DateTimeField(auto_now=True, auto_now_add=False, **NULLABLE, verbose_name='изменено')
 
     def __str__(self):
-        return f'{self.name} - {self.description}. Стоимость {self.price} за 1 штуку.'
+        return f'{self.name}. Стоимость {self.price} за 1 штуку.'
 
     class Meta:
         verbose_name = 'продукт'

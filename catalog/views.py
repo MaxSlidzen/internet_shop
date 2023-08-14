@@ -7,9 +7,9 @@ from random import shuffle
 
 # Create your views here.
 def home(request):
-
     context = {
         'title': 'Главная',
+        'object_list': Product.objects.all()[:5],
     }
     return render(request, 'catalog/home.html', context)
 
