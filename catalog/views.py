@@ -10,6 +10,7 @@ def home(request):
     context = {
         'title': 'Каталог',
         'object_list': Product.objects.all(),
+        'button': 'Перейти к товару'
     }
     return render(request, 'catalog/home.html', context)
 
@@ -27,21 +28,11 @@ def contacts(request):
     return render(request, 'catalog/contacts.html', context)
 
 
-# def catalog(request):
-#
-#     context = {
-#         'object_list': Product.objects.all(),
-#         'title': 'Каталог',
-#     }
-#     return render(request, 'catalog/catalog.html', context)
+def product(request, pk):
 
-
-# def home(request):
-#     product = Product.objects.all()
-#     product_list.shuffle()
-#
-#     context = {
-#         'object_list': product_list[:5],
-#         'title': 'Главная',
-#     }
-#     return render(request, 'catalog/home.html', context)
+    context = {
+        'object': Product.objects.get(pk=pk),
+        'title': 'Товар',
+        'button': 'В корзину'
+    }
+    return render(request, 'catalog/product.html', context)
