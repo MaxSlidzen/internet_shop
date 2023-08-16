@@ -12,19 +12,13 @@
             <div class="col-md-4" style="height:200px">
                 <h3>{{ object.title }}</h3>
                 <p style="height:70px">{{ object.content|slice:100 }}...</p>
-                    <div class="btn-group">
-                        <p>
-                            <a class="btn btn-outline-info" href="{% url 'blog:article_detail' object.pk %}" role="button">
-                                Перейти к статье
-                            </a>
-                            <a class="btn btn-outline-primary" href="{% url 'blog:article_update' object.pk %}" role="button">
-                                Редактировать
-                            </a>
-                            <a class="btn btn-outline-danger" href="#" role="button">
-                                Удалить
-                            </a>
-                        </p>
-                    </div>
+                <div class="btn-group">
+                <p>
+                        <a class="btn btn-outline-info" href="{% url 'blog:article_detail' object.pk %}" role="button">
+                            Перейти к статье
+                        </a>
+                    </p>
+                </div>
             </div>
         {% endfor %}
     </div>
