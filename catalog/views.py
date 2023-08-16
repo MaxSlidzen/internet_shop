@@ -1,18 +1,14 @@
-from django.http import HttpResponse
 from django.shortcuts import render
-
+from django.views.generic import ListView
 from catalog.models import Product
-from random import shuffle
 
 
-# Create your views here.
-def home(request):
-    context = {
+class ProductListView(ListView):
+    model = Product
+    extra_context = {
         'title': 'Каталог',
-        'object_list': Product.objects.all(),
         'button': 'Перейти к товару'
     }
-    return render(request, 'catalog/home.html', context)
 
 
 def contacts(request):
