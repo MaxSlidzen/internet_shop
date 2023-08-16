@@ -1,0 +1,17 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+{% include 'catalog/includes/inc_title.html' %}
+
+<div class="container">
+    <div class="row">
+        {% for object in object_list %}
+            <div class="col-md-4">
+                <h3>{{ object.title }}</h3>
+                <p>{{ object.content|slice:100 }}...</p>
+                <p><a class="btn btn-secondary" href="#" role="button">{{ button}}</a></p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}
