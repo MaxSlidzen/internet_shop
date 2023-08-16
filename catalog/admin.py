@@ -15,5 +15,5 @@ class CategoryAdmin(admin.ModelAdmin):
 
 
 @admin.register(Message)
-class CategoryAdmin(admin.ModelAdmin):
+class MessageAdmin(admin.ModelAdmin):
     list_display = ('name', 'phone', 'message')
