@@ -8,7 +8,7 @@
             <div class="col-md-4">
                 <h3>{{ object.title }}</h3>
                 <p>{{ object.content|slice:100 }}...</p>
-                <p><a class="btn btn-secondary" href="#" role="button">{{ button}}</a></p>
+                <p><a class="btn btn-secondary" href="{% url 'blog:article_detail' object.pk %}" role="button">{{ button}}</a></p>
             </div>
         {% endfor %}
     </div>

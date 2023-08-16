@@ -1,0 +1,14 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+{% include 'catalog/includes/inc_title.html' %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <h3>{{ object.title }}</h3>
+            <p>{{ object.content }}</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
