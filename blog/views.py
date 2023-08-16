@@ -1,18 +1,33 @@
 from django.shortcuts import render
 from blog.models import Article
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView
+from django.urls import reverse, reverse_lazy
 
 
 class ArticleListView(ListView):
     model = Article
     extra_context = {
-            'title': 'Блог',
-            'button': 'Перейти к статье'
-        }
+        'title': 'Блог'
+    }
 
 
 class ArticleDetailView(DetailView):
     model = Article
     extra_context = {
-            'title': 'Статья',
-        }
+        'title': 'Статья',
+    }
+
+
+class ArticleCreateView(CreateView):
+    model = Article
+    fields = ['title', 'content', 'preview']
+
+    success_url = reverse_lazy('blog:article_list')
+
+
+class ArticleUpdateView(UpdateView):
+    model = Article
+    fields = ['title', 'content', 'preview']
+
+    def get_success_url(self):
+        return reverse('blog:article_detail', args=[self.kwargs.get('pk')])
