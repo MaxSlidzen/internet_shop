@@ -5,12 +5,9 @@
 
 <div class="container">
     <div class="row text-center">
-        {% include 'catalog/includes/inc_catalog_product_card_top.html' %}
-                        {{ object.description }}
-        {% include 'catalog/includes/inc_catalog_product_card_bottom.html' %}
-                <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
-            </div>
-        </div>
+
+        {% include 'catalog/includes/inc_catalog_product_card.html' %}
+
     </div>
 </div>
 {% endblock %}

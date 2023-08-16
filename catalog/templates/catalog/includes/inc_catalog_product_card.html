@@ -1,0 +1,32 @@
+{% load my_tags %}
+<div class="col-4">
+    <div class="card mb-4 box-shadow">
+        <div class="card-header">
+            <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+        </div>
+        <div class="card-body">
+            <img src="{% mediapath object.image %}" alt="Card image">
+            <h4 class="card-title pricing-card-title">{{ object.price }} рублей</h4>
+            <p class="list-unstyled mt-3 mb-4 text-start m-3">
+
+            {% if object_list %}
+                {{ object.description|slice:100 }}...
+            {% else %}
+                {{ object.description }}
+            {% endif %}
+
+            </p>
+            <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                <li>Дата создания - {{object.created_at }}</li>
+                <li>Дата изменения - {{object.changed_at }}</li>
+            </ul>
+        </div>
+
+        {% if object_list %}
+        <a href="{% url 'catalog:product' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+        {% else %}
+        <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+        {% endif %}
+
+    </div>
+</div>
