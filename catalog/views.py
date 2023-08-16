@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView
-from catalog.models import Product
+from django.views.generic import ListView, DetailView, CreateView
+from catalog.models import Product, Message
+from django.urls import reverse_lazy
 
 
 class ProductListView(ListView):
@@ -19,14 +20,11 @@ class ProductDetailView(DetailView):
     }
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f'You have new message from {name}({phone}): {message}')
-
-    context = {
+class MessageCreateView(CreateView):
+    model = Message
+    fields = ['name', 'phone', 'message']
+    template_name = 'catalog/contacts.html'
+    success_url = reverse_lazy('catalog:contacts')
+    extra_context = {
         'title': 'Контакты'
     }
-    return render(request, 'catalog/contacts.html', context)

@@ -32,6 +32,10 @@
                 <div class="card-body">
                     <form method="post" action="" class="form-floating">
                         {% csrf_token %}
+<!--                        Не стал использовать шаблонную переменную, так как не могу подправить стиль отображения и выходит криво-->
+<!--                        <div class="col-6">-->
+<!--                            {{ form.as_p }}-->
+<!--                        </div>-->
                         <div class="mb-3">
                             <label for="name">Имя</label>
                             <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя"
@@ -45,8 +49,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="message">Сообщение</label>
-                            <textarea type="text" name="message" class="form-control" id="message"
-                                      placeholder="Сообщение" required></textarea>
+                            <textarea name="message" class="form-control" id="message"
+                                      placeholder="Сообщение" rows="5" required></textarea>
                         </div>
                         <input type="submit" class="btn btn-lg btn-block btn-outline-primary" value="Отправить">
                     </form>
