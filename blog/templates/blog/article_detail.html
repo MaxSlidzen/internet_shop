@@ -9,18 +9,18 @@
 
             <p>{{ object.content }}</p>
             <p class="btn-group">
-                <p>
-                    <a class="btn btn-outline-primary" href="{% url 'blog:article_update' object.pk %}" role="button">
-                        Редактировать
-                    </a>
-                    <a class="btn btn-outline-danger" href="{% url 'blog:article_delete' object.pk %}" role="button">
-                        Удалить
-                    </a>
-                </p>
-                <p>
-                    Просмотры {{ object.views_count }}
-                </p>
-            </div>
+                <a class="btn btn-outline-primary" href="{% url 'blog:article_update' object.pk object.slug %}"
+                   role="button">
+                    Редактировать
+                </a>
+                <a class="btn btn-outline-danger" href="{% url 'blog:article_delete' object.pk object.slug %}"
+                   role="button">
+                    Удалить
+                </a>
+            </p>
+            <p>
+                Просмотры {{ object.views_count }}
+            </p>
         </div>
     </div>
 </div>

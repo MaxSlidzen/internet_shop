@@ -10,7 +10,9 @@
                         <button type="submit" class="btn btn-danger">
                             Подтвердить
                         </button>
-                        <a href="{% url 'blog:article_detail' object.pk %}" class="btn btn-warning">Отмена</a>
+                        <a href="{% url 'blog:article_detail' object.pk object.slug%}" class="btn btn-warning">
+                            Отмена
+                        </a>
                     </form>
                 </div>
             </div>

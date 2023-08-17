@@ -58,7 +58,7 @@ class ArticleUpdateView(UpdateView):
     }
 
     def get_success_url(self):
-        return reverse('blog:article_detail', args=[self.kwargs.get('pk')])
+        return reverse('blog:article_detail', args=[self.kwargs.get('pk'), self.kwargs.get('slug')])
 
     def form_valid(self, form):
         if form.is_valid():
