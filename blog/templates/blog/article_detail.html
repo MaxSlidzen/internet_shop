@@ -12,7 +12,7 @@
                     <a class="btn btn-outline-primary" href="{% url 'blog:article_update' object.pk %}" role="button">
                         Редактировать
                     </a>
-                    <a class="btn btn-outline-danger" href="#" role="button">
+                    <a class="btn btn-outline-danger" href="{% url 'blog:article_delete' object.pk %}" role="button">
                         Удалить
                     </a>
                 </p>
