@@ -8,6 +8,7 @@
     <div class="row">
 
         {% for object in object_list %}
+        {% if object.is_published %}
             <div class="col-md-4" style="height:200px">
                 <h3>{{ object.title }}</h3>
                 <p style="height:70px">{{ object.content|slice:100 }}...</p>
@@ -19,6 +20,7 @@
                     </p>
                 </div>
             </div>
+        {% endif %}
         {% endfor %}
     </div>
 </div>
