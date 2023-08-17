@@ -2,6 +2,7 @@ from django.shortcuts import render
 from blog.models import Article
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse, reverse_lazy
+from pytils.translit import slugify
 
 
 class ArticleListView(ListView):
@@ -39,6 +40,14 @@ class ArticleCreateView(CreateView):
         'title': 'Создание',
     }
 
+    def form_valid(self, form):
+        if form.is_valid():
+            new_article = form.save()
+            new_article.slug = slugify(new_article.title)
+            new_article.save()
+
+        return super().form_valid(form)
+
 
 class ArticleUpdateView(UpdateView):
     model = Article
@@ -50,6 +59,14 @@ class ArticleUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('blog:article_detail', args=[self.kwargs.get('pk')])
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_article = form.save()
+            new_article.slug = slugify(new_article.title)
+            new_article.save()
+
+        return super().form_valid(form)
 
 
 class ArticleDeleteView(DeleteView):
