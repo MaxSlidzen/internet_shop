@@ -1,6 +1,5 @@
 {% extends 'catalog/base.html' %}
 {% block content %}
-{% include 'catalog/includes/inc_catalog_info.html' %}
 
 <div class="container">
     <div class="row text-start">
@@ -32,17 +31,25 @@
                 <div class="card-body">
                     <form method="post" action="" class="form-floating">
                         {% csrf_token %}
+<!--                        Не стал использовать шаблонную переменную, так как не могу подправить стиль отображения и выходит криво-->
+<!--                        <div class="col-6">-->
+<!--                            {{ form.as_p }}-->
+<!--                        </div>-->
                         <div class="mb-3">
                             <label for="name">Имя</label>
-                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя" required>
+                            <input type="text" name="name" class="form-control" id="name" placeholder="Ваше имя"
+                                   required>
                         </div>
-                        <div class="mb-3">
+                        <div>
                             <label for="phone">Телефон</label>
-                            <input type="text" name="phone" class="form-control" id="phone" placeholder="Контактный телефон" required>
+                            <input type="tel" name="phone" class="form-control" id="phone"
+                                   placeholder="Контактный телефон" pattern="[0-9]{3}-[0-9]{2}-[0-9]{3}" required>
+                            <small class="text-muted">Формат: 123-45-678</small><br><br>
                         </div>
                         <div class="mb-3">
                             <label for="message">Сообщение</label>
-                            <textarea type="text" name="message" class="form-control" id="message" placeholder="Сообщение" required></textarea>
+                            <textarea name="message" class="form-control" id="message"
+                                      placeholder="Сообщение" rows="5" required></textarea>
                         </div>
                         <input type="submit" class="btn btn-lg btn-block btn-outline-primary" value="Отправить">
                     </form>

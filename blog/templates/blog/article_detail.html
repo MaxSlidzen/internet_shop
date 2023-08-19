@@ -1,0 +1,28 @@
+{% extends 'catalog/base.html' %}
+{% block content %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h3>{{ object.title }}</h3>
+            <img src="/media/{{ object.preview }}" alt="#IMAGE#">
+
+            <p>{{ object.content }}</p>
+            <p class="btn-group">
+                <a class="btn btn-outline-primary" href="{% url 'blog:article_update' object.pk object.slug %}"
+                   role="button">
+                    Редактировать
+                </a>
+                <a class="btn btn-outline-danger" href="{% url 'blog:article_delete' object.pk object.slug %}"
+                   role="button">
+                    Удалить
+                </a>
+            </p>
+            <p>
+                Просмотры {{ object.views_count }}
+            </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

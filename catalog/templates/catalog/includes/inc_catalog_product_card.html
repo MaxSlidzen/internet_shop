@@ -21,12 +21,13 @@
                 <li>Дата изменения - {{object.changed_at }}</li>
             </ul>
         </div>
-
-        {% if object_list %}
-        <a href="{% url 'catalog:product' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
-        {% else %}
-        <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
-        {% endif %}
+        <div class="card-footer">
+            {% if object_list %}
+            <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+            {% else %}
+            <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+            {% endif %}
+        </div>
 
     </div>
 </div>

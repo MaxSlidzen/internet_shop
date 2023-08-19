@@ -1,38 +1,30 @@
-from django.http import HttpResponse
 from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView
+from catalog.models import Product, Message
+from django.urls import reverse_lazy
 
-from catalog.models import Product
-from random import shuffle
 
-
-# Create your views here.
-def home(request):
-    context = {
+class ProductListView(ListView):
+    model = Product
+    extra_context = {
         'title': 'Каталог',
-        'object_list': Product.objects.all(),
         'button': 'Перейти к товару'
     }
-    return render(request, 'catalog/home.html', context)
 
 
-def contacts(request):
-    if request.method == 'POST':
-        name = request.POST.get('name')
-        phone = request.POST.get('phone')
-        message = request.POST.get('message')
-        print(f'You have new message from {name}({phone}): {message}')
-
-    context = {
-        'title': 'Контакты'
-    }
-    return render(request, 'catalog/contacts.html', context)
-
-
-def product(request, pk):
-
-    context = {
-        'object': Product.objects.get(pk=pk),
+class ProductDetailView(DetailView):
+    model = Product
+    extra_context = {
         'title': 'Товар',
         'button': 'В корзину'
     }
-    return render(request, 'catalog/product.html', context)
+
+
+class MessageCreateView(CreateView):
+    model = Message
+    fields = ['name', 'phone', 'message']
+    template_name = 'catalog/contacts.html'
+    success_url = reverse_lazy('catalog:contacts')
+    extra_context = {
+        'title': 'Контакты'
+    }
