@@ -3,18 +3,28 @@
 {% block content %}
 
 <div class="container">
+    <div class="row">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+            <a href="{% url 'catalog:product_create' %}" type="button" class="btn btn-lg btn-success mb-4">Добавить продукт</a>
+        </div>
+    </div>
     <div class="row text-center">
-        {% for object in object_list %}
+    {% for object in object_list %}
 
-            <div class="col-3">
+        <div class="col-3 d-flex align-items-stretch">
             <div class="card mb-4 box-shadow">
-                <div class="card-header" style="height:5rem;">
+
+                <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
                 </div>
                 <div class="card-body">
-                    <img src="{% mediapath object.image %}" class="img-fluid" alt="Card image">
+                    {% if object.image %}
+                        <img src="{% mediapath object.image %}" class="img-fluid" alt="Card image">
+                    {% else %}
+                        <img src="/media/products/no_image/no_image.png" class="img-fluid" alt="Card image">
+                    {% endif %}
                     <h4 class="card-title pricing-card-title">{{ object.price }} рублей</h4>
-                    <p class="list-unstyled mt-3 mb-4 text-start m-3" style="height:7rem;">
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">
                         {{ object.description|slice:100 }}...
                     </p>
                     <hr>
@@ -26,11 +36,10 @@
                 <div class="card-footer">
                     <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
                 </div>
-
             </div>
         </div>
 
-        {% endfor %}
+    {% endfor %}
     </div>
 </div>
 {% endblock %}

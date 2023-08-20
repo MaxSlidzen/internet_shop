@@ -12,7 +12,11 @@
                     <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
                 </div>
                 <div class="card-body">
-                    <img src="{% mediapath object.image %}" class="img-fluid" alt="Card image">
+                    {% if object.image %}
+                        <img src="{% mediapath object.image %}" class="img-fluid" alt="Card image">
+                    {% else %}
+                        <img src="/media/products/no_image/no_image.png" class="img-fluid" alt="Card image">
+                    {% endif %}
                     <h4 class="card-title pricing-card-title">{{ object.price }} рублей</h4>
                     <p class="list-unstyled mt-3 mb-4 text-start m-3">
                         {{ object.description }}
@@ -24,7 +28,11 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="#" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+                    <div class="button-group text-start mb-3">
+                        <a href="{% url 'catalog:product_update' object.pk %}" type="button" class="btn btn-warning">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' object.pk %}" type="button" class="btn btn-danger m-2">Удалить</a>
+                    </div>
+                    <a href="#" type="button" class="btn btn-lg form-control btn-outline-success">В корзину</a>
                 </div>
 
             </div>
