@@ -3,7 +3,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from pytils.translit import slugify
 
 from catalog.forms import ProductForm
-from catalog.models import Product, Message
+from catalog.models import Product, Message, ProductVersion
 from django.urls import reverse_lazy, reverse
 
 
@@ -64,3 +64,7 @@ class MessageCreateView(CreateView):
     extra_context = {
         'title': 'Контакты'
     }
+
+
+class ProductVersionListView(ListView):
+    model = ProductVersion

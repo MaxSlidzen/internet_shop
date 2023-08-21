@@ -26,6 +26,16 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>Дата создания - {{object.created_at }}</li>
                         <li>Дата изменения - {{object.changed_at }}</li>
+                        <hr>
+                        {% if object.productversion_set.all %}
+                        {% for object_version in object.productversion_set.all %}
+                            {% if object_version.is_active %}
+                            <li>Активная версия - {{ object_version }}</li>
+                            {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <li>Активная версия отсутствует</li>
+                        {% endif %}
                     </ul>
                 </div>
                 <div class="card-footer">
