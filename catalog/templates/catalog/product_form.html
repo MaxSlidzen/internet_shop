@@ -28,7 +28,7 @@
                             {% endif %}
                         </button>
                         {% if object %}
-                            <a href="{% url 'catalog:product_detail' object.pk %}" class="btn btn-secondary m-2">Отмена</a>
+                            <a href="{% url 'catalog:product_detail' object.pk object.slug %}" class="btn btn-secondary m-2">Отмена</a>
                         {% else %}
                             <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary m-2">Отмена</a>
                         {% endif %}

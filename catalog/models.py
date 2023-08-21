@@ -18,6 +18,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name='наименование')
+    slug = models.CharField(max_length=150, verbose_name='slug', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     image = models.ImageField(upload_to='products/', verbose_name='превью', **NULLABLE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
@@ -32,6 +33,10 @@ class Product(models.Model):
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
         ordering = ('name',)
+
+
+# class ProductVersion(models.Model):
+
 
 
 class Message(models.Model):

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from pytils.translit import slugify
 
 from catalog.forms import ProductForm
 from catalog.models import Product, Message
@@ -27,11 +28,27 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
 
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save()
+            new_product.slug = slugify(new_product.name)
+            new_product.save()
+
+        return super().form_valid(form)
+
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
+
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save()
+            new_product.slug = slugify(new_product.name)
+            new_product.save()
+
+        return super().form_valid(form)
 
 
 class ProductDeleteView(DeleteView):

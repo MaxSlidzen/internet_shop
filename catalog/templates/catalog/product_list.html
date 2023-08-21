@@ -31,7 +31,7 @@
                     </ul>
                 </div>
                 <div class="card-footer">
-                    <a href="{% url 'catalog:product_detail' object.pk %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
+                    <a href="{% url 'catalog:product_detail' object.pk object.slug %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>
                 </div>
             </div>
         </div>
