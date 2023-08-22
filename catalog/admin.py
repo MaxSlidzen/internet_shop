@@ -10,7 +10,7 @@ class ProductAdmin(admin.ModelAdmin):
 
 
 @admin.register(ProductVersion)
-class ProductVersion(admin.ModelAdmin):
+class ProductVersionAdmin(admin.ModelAdmin):
     list_display = ('pk', 'name', 'version_number', 'product', 'is_active')
     list_filter = ('product',)
 

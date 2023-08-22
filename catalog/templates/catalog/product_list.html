@@ -30,16 +30,7 @@
                         <li>Дата изменения - {{ object.changed_at }}</li>
                         <hr>
 
-
-                        {% if object.productversion_set.all %}
-                        {% for object_version in object.productversion_set.all %}
-                            {% if object_version.is_active %}
-                            <li>Активная версия - {{ object_version }}</li>
-                            {% endif %}
-                        {% endfor %}
-                        {% else %}
-                        <li>Активная версия отсутствует</li>
-                        {% endif %}
+                        <li>Активная версия - {% active_version object.productversion_set.all %}</li>
 
                     </ul>
                 </div>
