@@ -47,6 +47,8 @@ class ProductVersionForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             if self.instance.pk is None or self.instance.is_active is True:
                 field.widget.attrs['class'] = 'form-control'
+
+            # Отображение неактивных версий в формате только для чтения
             else:
                 field.widget.attrs['class'] = 'form-control-plaintext fw-lighter'
                 field.widget.attrs['readonly'] = True

@@ -32,6 +32,7 @@ class ProductCreateView(CreateView):
     def get_success_url(self):
         button = self.request.POST.get('button')
 
+        # Обработка данных в зависимости от нажатой кнопки
         if button == 'save':
             pk = self.get_context_data()['object'].pk
             slug = self.get_context_data()['object'].slug
@@ -53,6 +54,7 @@ class ProductUpdateView(UpdateView):
     form_class = ProductForm
 
     def get_success_url(self):
+        # Обработка данных в зависимости от нажатой кнопки
         button = self.request.POST.get('button')
         if button == 'save_n_back':
             return reverse('catalog:product_detail', args=[self.kwargs.get('pk'), self.kwargs.get('slug')])
@@ -107,20 +109,26 @@ def choose_version(request, pk, version_id):
     try:
         active_version = ProductVersion.objects.get(product_id=product.pk, is_active=True)
 
+    # Возникает, если с помощью админки или из-за бага на момент операции установлено более 1 активной версии.
     except MultipleObjectsReturned:
         print('Получено больше 1 текущей активной версиии. Выбранная версия установлена единственной активной.')
         all_versions = ProductVersion.objects.filter(product_id=product.pk)
+        # Меняем активность всех версий на False
         for version in all_versions:
             version.is_active = False
             version.save()
+        # Если пользователь убирает активную версию полностью, то происходит обновление страницы с новыми данными
         if version_id == '0':
             return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
+        # Установка активности выбранной пользователем версии
         else:
             choosen_version = ProductVersion.objects.get(id=int(version_id))
             choosen_version.is_active = True
             choosen_version.save()
 
+    # Возникает, если текущая активная версия не установлена.
     except ProductVersion.DoesNotExist:
+        # Изменение активной версии на ту же самую
         if version_id == '0':
             return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
         else:
@@ -131,6 +139,7 @@ def choose_version(request, pk, version_id):
     else:
         if version_id != '0':
             choosen_version = ProductVersion.objects.get(id=int(version_id))
+            # Изменение активной версии на ту же самую
             if active_version.pk == choosen_version.pk:
                 return reverse('catalog:product_update', args=[product.pk, product.slug])
             else:
