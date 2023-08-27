@@ -1,58 +1,112 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
 
 {% block content %}
 <div class="container">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" id="product">
+        {% csrf_token %}
         <div class="row">
             <div class="col-6">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
                         <div class="card-title">
                             {% if object %}
-                                Редактировать продукт
+                            Редактировать продукт
                             {% else %}
-                                Добавить продукт
+                            Добавить продукт
                             {% endif %}
                         </div>
                     </div>
+
                     <div class="card-body">
-                        {% csrf_token %}
                         {{ form.as_p }}
                     </div>
+
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success m-2">
+                        <button type="submit" class="btn btn-success" name="button" value="save">
                             {% if object %}
-                                Сохранить
+                            Сохранить
                             {% else %}
-                                Добавить
+                            Добавить
+                            {% endif %}
+                        </button>
+
+                        <button type="submit" name="button" value="save_n_back"
+                           class="btn bg-success-subtle m-2">
+                            {% if object %}
+                            Сохранить и вернуться
+                            {% else %}
+                            Добавить и вернуться
                             {% endif %}
                         </button>
                         {% if object %}
-                            <a href="{% url 'catalog:product_detail' object.pk object.slug %}" class="btn btn-secondary m-2">Отмена</a>
+                        <a href="{% url 'catalog:product_detail' object.pk object.slug %}"
+                           class="btn btn-secondary m-2">Вернуться</a>
                         {% else %}
-                            <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary m-2">Отмена</a>
+                        <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary m-2">Вернуться</a>
                         {% endif %}
                     </div>
                 </div>
             </div>
+
+            {% if object %}
             <div class="col-6">
                 <div class="card mb-4 box-shadow">
                     <div class="card-header">
-                        <div class="card-title">Версии продукта</div>
+
+                        {% if object %}
+                        <label class="mb-2">Активная версия: {{ object.productversion_set.all|active_version }}</label>
+
+                        <div class="dropdown">
+                            <button class="btn btn-outline-success dropdown-toggle form-control" type="button"
+                                    data-bs-toggle="dropdown" aria-expanded="false">
+                                Выбрать активную версию
+                            </button>
+                            <ul class="dropdown-menu form-control text-center">
+                                <li>
+                                    <a class="dropdown-item" href="{% url 'catalog:choose_version' object.pk 0 %}">
+                                    --------
+                                    </a>
+                                </li>
+                                {% for item in object.productversion_set.all %}
+                                <li><a class="dropdown-item"
+                                       href="{% url 'catalog:choose_version' object.pk item.pk %}">{{ item }}</a></li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+
+                        {% endif %}
+
                     </div>
                     <div class="card-body">
+                        <div class="card-title">
+                            Версии продукта:
+                        </div>
+
                         {{ formset.management_form }}
                         {% for form in formset.forms %}
-                            {{ form.as_p }}
-                            {% if not forloop.last %}
-                                <hr>
-                            {% endif %}
+
+                        {% if not forloop.last %}
+                        <div class="card card-body my-3">
+                                {{ form.as_p }}
+                        </div>
+
+                        {% else %}
+                            <button class="form-control btn btn-outline-success my-3" type="button" data-bs-toggle="collapse"
+                                    data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                Добавить
+                            </button>
+                            <div class="collapse" id="collapseExample">
+                                <div class="card card-body">
+                                    {{ form.as_p }}
+                                </div>
+                            </div>
+                        {% endif %}
                         {% endfor %}
                     </div>
-                    <div class="card-footer"></div>
-
                 </div>
             </div>
+            {% endif %}
         </div>
     </form>
 </div>

@@ -9,7 +9,7 @@
 
         <div class="col-6">
             <div class="card mb-4 box-shadow">
-                <div class="card-header" style="height:5rem;">
+                <div class="card-header">
                     <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
                 </div>
                 <div class="card-body">
@@ -26,11 +26,10 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>Дата создания - {{object.created_at }}</li>
                         <li>Дата изменения - {{object.changed_at }}</li>
-                        <hr>
-
-                        <li>Активная версия - {% active_version object.productversion_set.all %}</li>
-
                     </ul>
+                    <hr>
+
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">Активная версия - {{ object.productversion_set.all|active_version }}</p>
                 </div>
                 <div class="card-footer">
                     <div class="button-group text-start mb-3">

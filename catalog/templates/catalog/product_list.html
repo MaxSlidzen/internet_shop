@@ -28,11 +28,9 @@
                     <ul class="list-unstyled mt-3 mb-4 text-start m-3">
                         <li>Дата создания - {{ object.created_at }}</li>
                         <li>Дата изменения - {{ object.changed_at }}</li>
-                        <hr>
-
-                        <li>Активная версия - {% active_version object.productversion_set.all %}</li>
-
                     </ul>
+                    <hr>
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">Активная версия - {{ object.productversion_set.all|active_version }}</p>
                 </div>
                 <div class="card-footer">
                     <a href="{% url 'catalog:product_detail' object.pk object.slug %}" type="button" class="btn btn-lg btn-block btn-outline-primary">{{ button }}</a>

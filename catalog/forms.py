@@ -5,20 +5,16 @@ from catalog.models import Product, ProductVersion
 CENSORED_WORDS = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция', 'радар']
 
 
-class StyleFormMixin:
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        for field_name, field in self.fields.items():
-            if field_name == 'is_active':
-                continue
-            else:
-                field.widget.attrs['class'] = 'form-control'
-
-class ProductForm(StyleFormMixin, forms.ModelForm):
+class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
         fields = ('name', 'price', 'description', 'category', 'image')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'
 
     def clean_name(self):
         cleaned_data = self.cleaned_data['name']
@@ -39,8 +35,18 @@ class ProductForm(StyleFormMixin, forms.ModelForm):
         return cleaned_data
 
 
-class ProductVersionForm(StyleFormMixin, forms.ModelForm):
+class ProductVersionForm(forms.ModelForm):
 
     class Meta:
         model = ProductVersion
-        fields = '__all__'
+        exclude = ('is_active',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if self.instance.pk is None or self.instance.is_active is True:
+                field.widget.attrs['class'] = 'form-control'
+            else:
+                field.widget.attrs['class'] = 'form-control-plaintext fw-lighter'
+                field.widget.attrs['readonly'] = True

@@ -17,9 +17,9 @@ def mediapath(val):
     return '#'
 
 
-@register.simple_tag
+@register.filter
 def active_version(val):
-    version = 'Отсутствует'
+    version = 'Не установлена'
     if val:
         for item in val:
             if item.is_active:
@@ -27,4 +27,3 @@ def active_version(val):
             else:
                 continue
     return version
-
