@@ -18,6 +18,7 @@ class Category(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=50, verbose_name='наименование')
+    slug = models.CharField(max_length=150, verbose_name='slug', **NULLABLE)
     description = models.TextField(verbose_name='описание')
     image = models.ImageField(upload_to='products/', verbose_name='превью', **NULLABLE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='категория')
@@ -26,12 +27,26 @@ class Product(models.Model):
     changed_at = models.DateTimeField(auto_now=True, auto_now_add=False, **NULLABLE, verbose_name='изменено')
 
     def __str__(self):
-        return f'{self.name}. Стоимость {self.price} за 1 штуку.'
+        return self.name
 
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
         ordering = ('name',)
+
+
+class ProductVersion(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, verbose_name='продукт')
+    version_number = models.CharField(max_length=10, verbose_name='версия')
+    name = models.CharField(max_length=50, verbose_name='наименование')
+    is_active = models.BooleanField(default=False, verbose_name='активность')
+
+    def __str__(self):
+        return f'{self.name} ({self.version_number})'
+
+    class Meta:
+        verbose_name = 'версия продукта'
+        verbose_name_plural = 'версии продукта'
 
 
 class Message(models.Model):

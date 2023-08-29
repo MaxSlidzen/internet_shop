@@ -1,11 +1,46 @@
 {% extends 'catalog/base.html' %}
+{% load my_tags %}
 {% block content %}
 
 
 <div class="container">
+    <h3>{{ title }}</h3>
     <div class="row text-center">
 
-        {% include 'catalog/includes/inc_catalog_product_card.html' %}
+        <div class="col-6">
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{ object.name }}</h4>
+                </div>
+                <div class="card-body">
+                    {% if object.image %}
+                        <img src="{% mediapath object.image %}" class="img-fluid" alt="Card image">
+                    {% else %}
+                        <img src="/media/products/no_image/no_image.png" class="img-fluid" alt="Card image">
+                    {% endif %}
+                    <h4 class="card-title pricing-card-title">{{ object.price }} рублей</h4>
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">
+                        {{ object.description }}
+                    </p>
+                    <hr>
+                    <ul class="list-unstyled mt-3 mb-4 text-start m-3">
+                        <li>Дата создания - {{object.created_at }}</li>
+                        <li>Дата изменения - {{object.changed_at }}</li>
+                    </ul>
+                    <hr>
+
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">Активная версия - {{ object.productversion_set.all|active_version }}</p>
+                </div>
+                <div class="card-footer">
+                    <div class="button-group text-start mb-3">
+                        <a href="{% url 'catalog:product_update' object.pk object.slug %}" type="button" class="btn btn-warning">Редактировать</a>
+                        <a href="{% url 'catalog:product_delete' object.pk object.slug %}" type="button" class="btn btn-danger m-2">Удалить</a>
+                    </div>
+                    <a href="#" type="button" class="btn btn-lg form-control btn-outline-success">В корзину</a>
+                </div>
+
+            </div>
+        </div>
 
     </div>
 </div>
