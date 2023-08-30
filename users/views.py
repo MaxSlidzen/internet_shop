@@ -1,4 +1,6 @@
+from django.conf import settings
 from django.contrib.auth.views import LoginView
+from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
 from django.utils.crypto import get_random_string
@@ -25,7 +27,7 @@ class UserRegisterView(CreateView):
             new_user.verify_token = get_random_string(length=20)
             new_user.save()
             send_verify_email(new_user)
-            return super().form_valid(form)
+        return super().form_valid(form)
 
 
 class UserProfileView(UpdateView):
@@ -41,4 +43,17 @@ def verify(request, verify_key):
     user_item = get_object_or_404(User, verify_token=verify_key)
     user_item.is_active = True
     user_item.save()
+    return redirect(reverse('users:login'))
+
+
+def generate_password(request):
+    new_password = get_random_string(length=12)
+    send_mail(
+        'Смена пароля',
+        f'Ваш новый пароль {new_password}',
+        settings.EMAIL_HOST_USER,
+        [request.user.email]
+    )
+    request.user.set_password(new_password)
+    request.user.save()
     return redirect(reverse('users:login'))
