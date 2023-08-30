@@ -2,7 +2,9 @@
 Tasks on module 6
 
 Для корректной работы необходимо:
-- В settings.py ввести свой пароль от postgresql (при необходимости);
+- В settings.py:
+  - ввести свой пароль от postgresql (при необходимости);
+  - заполнить настройки для электронной почты;
 - Создать базу данных с именем "catalog";
 - Установить виртуальное окружение и зайти в него;
 - Установить зависимости из requirements.txt `pip3 install -r requirements.txt` или pyproject.toml `poetry install`;
