@@ -28,7 +28,7 @@
                         <li>Дата изменения - {{object.changed_at }}</li>
                     </ul>
                     <hr>
-
+                    <p class="list-unstyled mt-3 mb-4 text-start m-3">Автор - {{ object.author|default:"отсутствует" }}</p>
                     <p class="list-unstyled mt-3 mb-4 text-start m-3">Активная версия - {{ object.productversion_set.all|active_version }}</p>
                 </div>
                 <div class="card-footer">

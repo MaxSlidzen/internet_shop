@@ -16,6 +16,7 @@ class ProductForm(forms.ModelForm):
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
 
+
     def clean_name(self):
         cleaned_data = self.cleaned_data['name']
 
