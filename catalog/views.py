@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
@@ -25,9 +27,10 @@ class ProductDetailView(DetailView):
     }
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
+    login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
         button = self.request.POST.get('button')
@@ -49,9 +52,10 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
+    login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
         # Обработка данных в зависимости от нажатой кнопки
@@ -87,9 +91,10 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
+    login_url = reverse_lazy('users:login')
 
 
 class MessageCreateView(CreateView):
@@ -102,6 +107,7 @@ class MessageCreateView(CreateView):
     }
 
 
+@login_required(login_url=reverse_lazy('users:login'))
 def choose_version(request, pk, version_id):
 
     product = Product.objects.get(pk=pk)
@@ -137,17 +143,13 @@ def choose_version(request, pk, version_id):
             choosen_version.save()
 
     else:
-        if version_id != '0':
-            choosen_version = ProductVersion.objects.get(id=int(version_id))
-            # Изменение активной версии на ту же самую
-            if active_version.pk == choosen_version.pk:
-                return reverse('catalog:product_update', args=[product.pk, product.slug])
-            else:
-                choosen_version.is_active = True
-                choosen_version.save()
-
         active_version.is_active = False
         active_version.save()
+        if version_id != '0':
+            choosen_version = ProductVersion.objects.get(id=int(version_id))
+            choosen_version.is_active = True
+            choosen_version.save()
+
 
 
     return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
