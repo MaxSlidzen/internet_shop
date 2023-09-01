@@ -1,6 +1,6 @@
 from django.db import models
 
-NULLABLE = {'blank': True, 'null': True}
+from catalog.models import NULLABLE
 
 
 class Article(models.Model):

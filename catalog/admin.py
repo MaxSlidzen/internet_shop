@@ -4,22 +4,22 @@ from catalog.models import Product, ProductVersion, Category, Message
 
 @admin.register(Product)
 class ProductAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'category', 'price')
+    list_display = ('name', 'category', 'price',)
     list_filter = ('category',)
     search_fields = ('name', 'description',)
 
 
 @admin.register(ProductVersion)
 class ProductVersionAdmin(admin.ModelAdmin):
-    list_display = ('pk', 'name', 'version_number', 'product', 'is_active')
+    list_display = ('name', 'version_number', 'product', 'is_active',)
     list_filter = ('product',)
 
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name')
+    list_display = ('name',)
 
 
 @admin.register(Message)
 class MessageAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'message')
+    list_display = ('name', 'phone', 'message',)
