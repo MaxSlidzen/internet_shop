@@ -161,7 +161,7 @@ class MessageCreateView(CreateView):
     }
 
 
-@login_required(login_url=reverse_lazy('users:login'))
+@login_required
 def choose_version(request, pk, version_id):
 
     product = Product.objects.get(pk=pk)
