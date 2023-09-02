@@ -2,35 +2,65 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
 from pytils.translit import slugify
 
+from blog.models import Article
 from catalog.forms import ProductForm, ProductVersionForm
-from catalog.models import Product, Message, ProductVersion
+from catalog.models import Product, Message, ProductVersion, Category
 from django.urls import reverse_lazy, reverse
 from django.forms import inlineformset_factory
 
 
+PRODUCT_UPDATE_VIEW = 'catalog:product_update'
+
+
+class IndexView(TemplateView):
+    template_name = 'catalog/index.html'
+    extra_context = {
+        'title': 'Главная страница'
+    }
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['products'] = Product.objects.order_by('-created_at')[:4]
+        context_data['articles'] = Article.objects.filter(is_published=True).order_by('-created')[:3]
+        return context_data
+
+
+class CategoryListView(ListView):
+    model = Category
+
+
 class ProductListView(ListView):
     model = Product
-    extra_context = {
-        'title': 'Каталог',
-        'button': 'Перейти к товару'
-    }
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.kwargs.get('pk'):
+            queryset = queryset.filter(category_id=self.kwargs.get('pk'))
+
+        return queryset
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        if self.kwargs.get('pk'):
+            category_item = Category.objects.get(pk=self.kwargs.get('pk'))
+            context_data['category_pk'] = category_item.pk
+            context_data['title'] = f'Все товары категории "{category_item.name}"'
+        else:
+            context_data['title'] = 'Все наши товары'
+
+        return context_data
 
 
 class ProductDetailView(DetailView):
     model = Product
-    extra_context = {
-        'title': 'Товар',
-        'button': 'В корзину'
-    }
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
-    login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
         button = self.request.POST.get('button')
@@ -39,7 +69,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         if button == 'save':
             pk = self.get_context_data()['object'].pk
             slug = self.get_context_data()['object'].slug
-            return reverse('catalog:product_update', args=[pk, slug])
+            return reverse(PRODUCT_UPDATE_VIEW, args=[pk, slug])
 
         return reverse_lazy('catalog:product_list')
 
@@ -56,7 +86,6 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
-    login_url = reverse_lazy('users:login')
 
     def get_success_url(self):
         # Обработка данных в зависимости от нажатой кнопки
@@ -64,7 +93,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         if button == 'save_n_back':
             return reverse('catalog:product_detail', args=[self.kwargs.get('pk'), self.kwargs.get('slug')])
 
-        return reverse('catalog:product_update', args=[self.kwargs.get('pk'), self.kwargs.get('slug')])
+        return reverse(PRODUCT_UPDATE_VIEW, args=[self.kwargs.get('pk'), self.kwargs.get('slug')])
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -95,7 +124,6 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
-    login_url = reverse_lazy('users:login')
 
 
 class MessageCreateView(CreateView):
@@ -126,7 +154,7 @@ def choose_version(request, pk, version_id):
             version.save()
         # Если пользователь убирает активную версию полностью, то происходит обновление страницы с новыми данными
         if version_id == '0':
-            return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
+            return redirect(reverse(PRODUCT_UPDATE_VIEW, args=[product.pk, product.slug]))
         # Установка активности выбранной пользователем версии
         else:
             choosen_version = ProductVersion.objects.get(id=int(version_id))
@@ -137,7 +165,7 @@ def choose_version(request, pk, version_id):
     except ProductVersion.DoesNotExist:
         # Изменение активной версии на ту же самую
         if version_id == '0':
-            return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
+            return redirect(reverse(PRODUCT_UPDATE_VIEW, args=[product.pk, product.slug]))
         else:
             choosen_version = ProductVersion.objects.get(id=int(version_id))
             choosen_version.is_active = True
@@ -151,6 +179,4 @@ def choose_version(request, pk, version_id):
             choosen_version.is_active = True
             choosen_version.save()
 
-
-
-    return redirect(reverse('catalog:product_update', args=[product.pk, product.slug]))
+    return redirect(reverse(PRODUCT_UPDATE_VIEW, args=[product.pk, product.slug]))
