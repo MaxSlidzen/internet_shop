@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.cache import cache
 from django.core.exceptions import MultipleObjectsReturned
 from django.shortcuts import redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
@@ -11,6 +13,7 @@ from catalog.models import Product, Message, ProductVersion, Category
 from django.urls import reverse_lazy, reverse
 from django.forms import inlineformset_factory
 
+from catalog.services import get_categories
 
 PRODUCT_UPDATE_VIEW = 'catalog:product_update'
 
@@ -31,22 +34,44 @@ class IndexView(TemplateView):
 class CategoryListView(ListView):
     model = Category
 
+    def get_queryset(self):
+        queryset = get_categories()
+
+        return queryset
+
 
 class ProductListView(ListView):
     model = Product
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if self.kwargs.get('pk'):
+        if self.kwargs.get('pk') != 0:
             queryset = queryset.filter(category_id=self.kwargs.get('pk'))
 
         return queryset
 
+    # def get_queryset(self):
+    #     category_id = self.kwargs.get('pk')
+    #     if self.kwargs.get('pk') != 0:
+    #         queryset = Product.objects.filter(category_id=category_id)
+    #     else:
+    #         queryset = Product.objects.all()
+    #
+    #     if settings.CACHE_ENABLED:
+    #         key = f"products_category_{category_id}"
+    #         cache_data = cache.get(key)
+    #         if cache_data is None:
+    #             cache_data = queryset
+    #
+    #             cache.set(key, cache_data)
+    #         return cache_data
+    #
+    #     return queryset
+
     def get_context_data(self, *args, **kwargs):
         context_data = super().get_context_data(*args, **kwargs)
-        if self.kwargs.get('pk'):
+        if self.kwargs.get('pk') != 0:
             category_item = Category.objects.get(pk=self.kwargs.get('pk'))
-            context_data['category_pk'] = category_item.pk
             context_data['title'] = f'Все товары категории "{category_item.name}"'
         else:
             context_data['title'] = 'Все наши товары'

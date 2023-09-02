@@ -81,9 +81,9 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'catalog',
-        'USER': 'postgres',
-        # 'PASSWORD': 'Ваш пароль от postgres'
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD')
     }
 }
 
@@ -141,9 +141,9 @@ EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = int(os.getenv('EMAIL_PORT'))
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
-EMAIL_USE_SSL = (os.getenv('CACHE_ENABLED', 'False') == 'True')
+EMAIL_USE_SSL = (os.getenv('EMAIL_USE_SSL', 'False') == 'True')
 
-CACHE_ENABLED = (os.getenv('EMAIL_USE_SSL', 'False') == 'True')
+CACHE_ENABLED = (os.getenv('CACHE_ENABLED', 'False') == 'True')
 
 if CACHE_ENABLED:
     CACHES = {
