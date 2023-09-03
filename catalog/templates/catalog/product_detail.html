@@ -35,6 +35,7 @@
                     <div class="button-group text-start mb-3">
                         <a href="{% url 'catalog:product_update' object.pk object.slug %}" type="button" class="btn btn-warning">Редактировать</a>
                         <a href="{% url 'catalog:product_delete' object.pk object.slug %}" type="button" class="btn btn-danger m-2">Удалить</a>
+                        <a href="{{ last_good_url }}" type="button" class="btn btn-secondary">Назад к продуктам</a>
                     </div>
                     <a href="#" type="button" class="btn btn-lg form-control btn-outline-success">В корзину</a>
                 </div>

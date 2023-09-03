@@ -34,16 +34,16 @@
                         <button type="submit" name="button" value="save_n_back"
                            class="btn bg-success-subtle m-2">
                             {% if object %}
-                            Сохранить и вернуться
+                            Сохранить и перейти к продукту
                             {% else %}
-                            Добавить и вернуться
+                            Добавить и перейти к продуктам
                             {% endif %}
                         </button>
                         {% if object %}
                         <a href="{% url 'catalog:product_detail' object.pk object.slug %}"
-                           class="btn btn-secondary m-2">Вернуться</a>
+                           class="btn btn-secondary">Перейти к продукту</a>
                         {% else %}
-                        <a href="{% url 'catalog:product_list' %}" class="btn btn-secondary m-2">Вернуться</a>
+                        <a href="{{ last_good_url }}" class="btn btn-secondary">Перейти к продуктам</a>
                         {% endif %}
                     </div>
                 </div>

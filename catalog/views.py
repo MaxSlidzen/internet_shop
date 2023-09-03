@@ -16,6 +16,7 @@ from django.forms import inlineformset_factory
 from catalog.services import get_categories
 
 PRODUCT_UPDATE_VIEW = 'catalog:product_update'
+LAST_GOOD_URL = '/'
 
 
 class IndexView(TemplateView):
@@ -26,6 +27,8 @@ class IndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
+        global LAST_GOOD_URL
+        LAST_GOOD_URL = '/'
         context_data['products'] = Product.objects.order_by('-created_at')[:4]
         context_data['articles'] = Article.objects.filter(is_published=True).order_by('-created')[:3]
         return context_data
@@ -47,7 +50,8 @@ class ProductListView(ListView):
         queryset = super().get_queryset()
         if self.kwargs.get('pk') != 0:
             queryset = queryset.filter(category_id=self.kwargs.get('pk'))
-
+        global LAST_GOOD_URL
+        LAST_GOOD_URL = f"/{self.kwargs.get('pk')}/products/"
         return queryset
 
     # def get_queryset(self):
@@ -82,6 +86,11 @@ class ProductListView(ListView):
 class ProductDetailView(DetailView):
     model = Product
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['last_good_url'] = LAST_GOOD_URL
+        return context_data
+
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
@@ -96,7 +105,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             slug = self.get_context_data()['object'].slug
             return reverse(PRODUCT_UPDATE_VIEW, args=[pk, slug])
 
-        return reverse_lazy('catalog:product_list')
+        return LAST_GOOD_URL
 
     def form_valid(self, form):
         if form.is_valid():
@@ -106,6 +115,11 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
             new_product.save()
 
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['last_good_url'] = LAST_GOOD_URL
+        return context_data
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
@@ -148,7 +162,9 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
-    success_url = reverse_lazy('catalog:product_list')
+
+    def get_success_url(self):
+        return LAST_GOOD_URL
 
 
 class MessageCreateView(CreateView):
